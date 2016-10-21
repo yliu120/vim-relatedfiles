@@ -44,10 +44,14 @@ BUILD files can be:
 
 ### Details
 In the relatedfiles.vim, we set four keyboard mappings only:
-1. Switch to BUILD file: <leader>rb
-2. Switch to Header file: <leader>rh
-3. Switch to Source file: <leader>rc
-4. Switch to Test file: <leader>rt
+1. Switch to BUILD file: <leader>rb.
+ 
+2. Switch to Header file: <leader>rh.
+ 
+3. Switch to Source file: <leader>rc.
+ 
+4. Switch to Test file: <leader>rt.
+ 
 
 If files are not created, then we will provide several file names with different extensions to
 user. User can make an option and the file will be created in a new tab. If the file is not opened,
