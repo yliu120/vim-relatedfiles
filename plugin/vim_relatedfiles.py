@@ -130,8 +130,12 @@ def Run(option):
 
     # the file status (build/src/hdr/test) of current buffer
     status = None
-    if TEST_PATTERN.match(mod_name) and file_type in FILE_EXT['test']:
-        status = 'test'
+    if TEST_PATTERN.match(mod_name):
+        if file_type in FILE_EXT['test']:
+            status = 'test'
+        else:
+            print "Invalid file naming for unit tests."
+            return -1
     else:
         for ftype in FILE_EXT:
             if file_type in FILE_EXT[ftype]:
