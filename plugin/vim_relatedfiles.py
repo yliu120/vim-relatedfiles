@@ -66,7 +66,7 @@ def get_user_choice(message):
             raise ValueError
 
         vim.command('unlet user_input')
-    except (vim.error, ValueError):
+    except (vim.error, ValueError, KeyboardInterrupt):
         return -1
 
     return choice - 1
@@ -97,15 +97,14 @@ def related_files(option, status, path, name):
 def parse_buffer_name(name):
     '''Parse the path of the buffer into a tuple of filetype and module name'''
 
-    module_name = name.split('/').pop()
-    path = name[:name.rfind(module_name)]
-    module = module_name.split('.')
+    module_file = name.split('/').pop()
+    path = name[:name.rfind(module_file)]
+    module = module_file.split('.')
+    if len(module) > 2:
+        raise ValueError
 
-    if len(module) != 2:
-        print "Your current filename %s is not recognized." % module_name
-        return -1
-
-    return (module[1], path, module[0])
+    module_ext = module[1] if len(module) == 2 else None
+    return (module_ext, path, module[0])
 
 
 def open_related_file(filename):
@@ -126,7 +125,11 @@ def Run(option):
         return -1
 
     buf_name = vim.current.buffer.name
-    file_type, path, mod_name = parse_buffer_name(buf_name)
+    try:
+        file_type, path, mod_name = parse_buffer_name(buf_name)
+    except ValueError:
+        print "Your file name doesn't follow the naming standard."
+        return -1
 
     # the file status (build/src/hdr/test) of current buffer
     status = None
@@ -142,7 +145,7 @@ def Run(option):
                 status = ftype
 
     # We don't do anything if we are already in that file.
-    if status == None:
+    if status is None:
         print "Your file type is not recognized."
         return -1
     if status == option:
