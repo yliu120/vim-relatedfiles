@@ -142,6 +142,9 @@ def Run(option):
                 status = ftype
 
     # We don't do anything if we are already in that file.
+    if status == None:
+        print "Your file type is not recognized."
+        return -1
     if status == option:
         return 0
 
